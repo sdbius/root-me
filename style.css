@@ -1,0 +1,99 @@
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+::selection {
+    background-color: hsl( 180, 50%, 90% );
+}
+
+head {
+    display: none;
+}
+
+body {
+    margin: 10;
+    padding: 10;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.5em;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+}
+
+div {
+    display: block;
+    text-align: center;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 1rem 0;
+    clear: both;
+}
+
+h2 {
+    font-size: 2em;
+    margin: 110;
+    margin-bottom: 32px;
+    font-weight: 300;
+    display: block;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    text-align: center;
+}
+
+a {
+    color: hsl( 180, 53%, 50% );
+    transition: color .11s ease-in-out;
+}
+
+b, strong {
+    font-weight: bolder;
+}
+
+ol, ul{
+    /* display: list-item;
+    line-height: 1.8; */
+    list-style-position: inside;
+}
+
+img {
+    display: inline-block;
+    box-sizing: border-box;
+    height: auto;
+    max-width: 100%;
+    vertical-align: bottom;
+    position: relative;
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+code {
+    background-color: hsl(0,0%,96.5%);
+    color: rgba(255, 0, 0, 0.836);
+    border-radius: 20px; /* Making border radius */
+    width: auto; /* Making auto-sizable width */
+    height: auto; /* Making auto-sizable height */
+    padding: 1px 6px 1px 6px; /* Making space around letters */
+}
+
+figcaption {
+    font-size: .71111em;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.credits {
+    margin: 100px;
+    /* line-height: 1; */
+    text-align: center;
+    margin-bottom: 50px;
+}
