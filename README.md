@@ -6,4 +6,7 @@ RootMe CTF WriteUp
 - 🌐 A simple web page showing how to solve the TryHackMe RootMe room.
 - 💻 My first website after years without using HTML and CSS, also my first room on TryHackMe
 
+### Access it right now
+[RootMe](https://tiagovst.github.io/rootme/)
+
 ![link](https://img.shields.io/badge/RootMe-1.0-brightgreen)
