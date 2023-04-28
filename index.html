@@ -7,243 +7,262 @@
     <title>RootMe Writeup</title>
     <link rel="icon" href="images/hacker.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
-    <div class="introduction">
-        <h2>RootMe Capture the Flag walk through</h2>
-        <p>RootMe is a vulnerable machine created by reddyyZ on TryHackMe practice<br>room and is meant to test skills like: nmap, GoBuster, privilege escalation,<br>SUID, find webshell and GTFOBins.
-        </p>
-        <p>You can access it by clicking in the link below:</p>
-        <a href="https://tryhackme.com/room/rrootme">RootMe on TryHackMe Official Website</a>
+    <header>
+    <!-- navBar -->
+    <div class="navbar" id="navbar">
+        <a href="#home">Top</a>
+        <a href="#tasks">Tasks</a>
+        <a href="#steps">Walk-through</a>
+        <a href="#credits">Credits</a>
     </div>
+    </header>
 
-    <div class="walk-through">
-        <p>In order to solve this easy room, there are some requirements and tasks to<br> complete, let's have a look on them!</p>
-        <br>
-        <h3>Tasks</h3>
-        <h4>Task 1: Deploy the Machine</h4>
-        <p>A very simple task.<br>In this first one we just need to run the machine in order to be able to<br> access it through its IP (Internet Protocol).</p>
-        
-        <h4>Task 2: Reconnaissance</h4>
-        <p>Here its where the hacking really begins!<br>Now we got a some more questions to solve to get to the next task.</p>
+    <main>
+        <div class="content">
 
-        <ul>
-            <li>How many ports are open?</li>
-            <ul><li><b>*</b></li></ul>
-            <li>What version of Apache is running?</li>
-            <ul><li><b>2.*.**</b></li></ul>
-            <li>What service is running on port 22?</li>
-            <ul><li><b>S**</b></li></ul>
-            <li>Find directories on the web server using the enumaration tool.</li>
-            <ul><li><b>No answer needed.</b></li></ul>
-            <li>What is the hidden directory?</li>
-            <ul><li><b>/p****/</b></li></ul>
-        </ul>
+            <h2 style="padding-top: 60px; margin-bottom: 10px;" id="home">RootMe Capture the Flag walk through</h2>
 
-        <p>In order to get the proper answer to these questions, we'll have to use <code>nmap</code> and <code>GoBuster</code></p>
-
-        <h4>Task 3: Getting a Shell</h4>
-
-        <p>Now we need to find a form to upload a exploit and get a reverse-shell running<br> on the target system. Then we'll explore it and look for a flag on 
-            the system</p>
-        <ul>    
-            <li>The archive that we need to look for is <code>user.txt</code></li>
-            <ul><li><b>THM{y**_***_*_****l}</b></li></ul>
-        </ul>
-        <p>To find a way to hack the system, we need to analize all the resouces that we have,<br> then start to test it and look for vulnerable places to attack.</p>
-
-        <h4>Task 4: Privilege Escalation</h4>
-        <p>Now that we got a shell, we need to find a way to become root.<br>To do that, we are going to look for SUID files trying to find anything out of its 
-            place.</p>
-
-        <ul>
-            <li>Which file from the SUID list is weird?</li>
-                <ul><li><b>/u**/***/******</b></li></ul>
-            <li>Find a form to escalate your privilege</li>
-                <ul><li><b>No answer needed.</b></li></ul>
-            <li>What's the flag from the <code>root.txt</code> archive?</li>
-                <ul><li><b>THM{p********_*********n}</b></li></ul>
-        </ul>
-    </div>
-
-    <div class="steps">
-        <br>
-        <h4>Steps</h4>
-        <ol>
-
-            <!-- Using nmap -->
-        <li>Scan the machine using nmap:</li>
-        <p>Type: <code>nmap -sC -sV &lt;IP_Address></code></p>
-        <li style="list-style-type: circle;">Using <code>-sC</code> we are scanning with the nmap default scripts.</li><br>
-        <li style="list-style-type: circle;">Using <code>-sV</code> we are getting more information about the open ports in the target machine.</li>
-        
-        </ol>
-
-        <img src="images/nmap.png" alt="nmap's scan result">
-        <p>Now the first three questions can be answered properly:</p>
-
-        <ul>
-            <li>How many ports are open?</li>
-            <ul><li><b>2</b></li></ul>
-            <li>What version of Apache is running?</li>
-            <ul><li><b>2.4.29</b></li></ul>
-            <li>What service is running on port 22?</li>
-            <ul><li><b>SSH</b></li></ul>
-        </ul>
-
-            <!-- Using GoBuster -->
-        <ol start="2">
-            <li>Run GoBuster to look for files and directories on the web server.</li>
-            <p>Type: <code>gobuster dir -u http://&lt;IP_Address> -w &lt;wordlist>.txt</code></p>
-            <li style="list-style-type: circle;"><code>dir</code> is used in order for gobuster to look for directories and enter the brute-force mode.</li>
-            <li style="list-style-type: circle;"><code>-u</code> can be used to pass a URL.</li>
-            <li style="list-style-type: circle;"><code>-w</code> can be used to specify a wordlist.</li>
-        </ol>
-
-        <img src="images/gobuster.png" alt="GoBuster result">
-        <p>Based on the result above, one important question can be responded.</p>
-        <ul>
-            <li>What is the hidden directory?</li>
-            <ul><li><b>/panel/</b></li></ul>
-        </ul>
-        
-            <!-- Accessing the hidden directory -->
-        <ol start="3">
-            <li>Visit the hidden directory that we just found</li>
-            <p><small>Always remember to use the web server IP address or URL.</small></p>
-        </ol>    
-
-        <img src="images/secretPage.png" alt="Secret page">
-        <p>Looks like in the hidden directory we can upload a file to the web server.<br>Then, we can totally take this as an advantage and try to upload a malicius
-            file to it.
-        </p>
-
-            <!-- Starting the reverse-shell proccess -->
-        <ol start="4">
-            <li>Now we need to upload a web shell in order to the a reverse-shell running on the target system.</li>
-            <p>If you are using Kali Linux, it comes with all the tool we need to solve the CTF, <br>including a php reverse-shell. To access it, navigate to <code>/usr/share/webshells/php</code><br> and look for <code>php-reverse-shell.php</code>.
+            <p>RootMe is a vulnerable machine created by reddyyZ on TryHackMe practice room and is meant to test skills like: nmap, GoBuster, privilege escalation,
+                SUID, find webshell and GTFOBins.
             </p>
-
-            <p><small>Otherwise you can download it <a href="https://pentestmonkey.net/tools/web-shells/php-reverse-shell">here</a></small></p>
-
-            <p>Now that we got everything we need, its time to change all the values on the php script<br> in order to get our communication with the machine.<br>
-                To do that, just edit this values shown below. (You can use gedit or nano for it.)
-            </p>
-        </ol>
-        <img src="images/php-reverse.png" alt="Editing the php script">
-        <figcaption>Edit the IP and PORT variables</figcaption>
-
-            <!-- uploading the shell -->
-        <ol start="5">
-            <li>Now, go back to the Website and upload the php script to the server.</li>
-            <p>You should get an error!<br>No worries, this is a file upload security solution that blocks archives that may break the server.<br>
-            To bypass this restriction, change the file extension to <code>php5</code><br><small>Note that there are other types of file upload restrictions
-                and most of the time a simple extension change will not do it.
-            </small></p>
-        </ol>
-        <img src="images/not-permitted.png" alt="Hidden page error">
-
-        <p>You can check the files on the server by accesing <code>&lt;IP_Address>/uploads/</code></p>
-        <img src="images/upload.png" alt="Uploads page">
+            <p>You can access it by clicking in the link below:</p>
+            <a href="https://tryhackme.com/room/rrootme">RootMe on TryHackMe Official Website</a>
         
-            <!-- netcat -->
-        <ol start="6">
-            <li>Now that we got the reverse-shell on the target machine, we just need to start a<br><code>netcat</code> listener on the port that we configured eirlier.</li>
-            <p>Type: <code>sudo nc -lvpn 9999</code></p>
-        </ol>
-        <img src="images/listener.png" alt="NetCat Listener">
-
-            <!-- curl -->
-        <p>With NetCat running, we just need to execute the php script on the target machine.<br>To do that, we need to access its location.</p>
-        <p>One way of doing so is use the <code>curl</code> tool and make a http request on the webpage.<br>Just type: <code>curl http://&lt;IP_Address>/uploads/reverse-shell.php5</code></p>
-        <img src="images/curl.png" alt="Http request using curl">
-
-        <ol start="7">
-            <li>Go back and check if we got a connection on the listener.</li>
-        </ol>
-        <img src="images/shell.png" alt="Getting a shell">
-        <figcaption>Yup! We got a shell!</figcaption>
-
-        <ol start="8">
-            <li>In order to answer the next question, we need to explore the system looking<br>for a file named <code>user.txt</code>. To do that, we should use the 
-            Linux <code>Find</code> tool.</li>
-            <p>Type: <code>find / -type f -name user.txt 2> /dev/null</code></p>
+            <p>In order to solve this easy room, there are some requirements and tasks to complete, let's have a look on them!</p>
+            <br>
+            <h3 id="tasks">Tasks</h3>
+            <h4>Task 1: Deploy the Machine</h4>
+            <p>A very simple task. In this first one we just need to run the machine in order to be able to access it through its IP (Internet Protocol).</p>
             
-        </ol>
-        <ul>
+            <h4>Task 2: Reconnaissance</h4>
+            <p>Here its where the hacking really begins! Now we got a some more questions to solve to get to the next task.</p>
+
             <ul>
-                <li><code>-type f</code> is used to look for files.</li>
-                <li><code>-name</code> can be used to pass a filename.</li>
-                <li><code>2> /dev/null</code> can be used to send the error messages.</li>
-            </ul>    
-        </ul>
-        <img src="images/search-usertxt.png" alt="Using Find">
-
-            <!-- user.txt flag -->
-        <ol start="9">
-            <li>Retrieve the content of user.txt.</li>
-            <p>Type: <code>cat /var/www/user.txt</code><br>Now we can answer one more question:</p>
-        </ol>
-        <ul>
-            <li>What is <code>user.txt</code>?</li>
-            <ul><li><strong>THM{y0u_g0t_a_sh3ll}</strong></li></ul>
-        </ul>
-
-            <!-- SUID -->
-        <ol start="10">
-            <li>To solve the next Task, we need to find strange files with SUID permissions and see if<br>it can be explored and escalate our privilege.</li>
-            <p>To do this, type: <code>find / type -f -user root -perm -u=s 2> /dev/null</code></p>
-        </ol>
-        <img src="images/suid.png" alt="SUID search">
-        <figcaption>The blurred path is the one out of place</figcaption>
-
-        <p>Now we can answer one more question:</p>
-        <ul>
-            <li>Which file from the SUID list is weird?</li>
-            <ul><li><strong>/usr/bin/python</strong></li></ul>
-        </ul>
-
-            <!-- gtfobins -->
-        <ol start="11">
-            <li>We just found a huge vulnerability on the target machine's OS. <br>In order to exploit it, we can look up for specific binaries onto 
-                <a href="http://https://gtfobins.github.io/">GTFOBins</a> website.</li>
-        </ol>
-        <img src="images/suid.png" alt="SUID Binary in GTFOBins' site">
-
-        <!-- Privilege Escalation -->
-        <ol start="12">
-            <li>Now that we have everything we need to escalate our privilege, just execute the<br>folowing command to get the root shell.</li>
-            <p>Type: <code>python3 -c ‘import os; os.execl(“/bin/sh”, “sh”, “-p”)’</code></p>
-        </ol>
-        <img src="images/root.png" alt="Getting super user privileges">
-        <figcaption>Now we're root!</figcaption>
-
-        <!-- Root flag location  -->
-        <ol start="13">
-            <li>To find the root's flag, we need to use the <code>find</code> command again.</li>
-            <p>Type: <code>find / -type f -name root.txt</code></p>
-        </ol>
-        <img src="images/rootflag-location.png" alt="Super user flag location">
-        <figcaption>root flag location</figcaption>
-
-        <!-- Root flag-->
-        <ol start="14">
-            <li>Retrieve content of <code>root.txt</code> using the <code>cat</code> command.</li>
-            <p>Type: <code>cat /root/root.txt</code></p>
-        </ol>
-        <img src="images/root-flag.png" alt="Super user flag">
-        <figcaption>root flag!</figcaption>
-
-        <p>And now, finally, we can answer the final question:</p>
-        <ul>
-            <li>What's the flag from the root.txt archive?</li>
-            <ul>
-                <li><b>THM{pri1v1l3g3_3sc4l4t10n}</b></li>
+                <li>How many ports are open?</li>
+                <ul><li><b>*</b></li></ul>
+                <li>What version of Apache is running?</li>
+                <ul><li><b>2.*.**</b></li></ul>
+                <li>What service is running on port 22?</li>
+                <ul><li><b>S**</b></li></ul>
+                <li>Find directories on the web server using the enumaration tool.</li>
+                <ul><li><b>No answer needed.</b></li></ul>
+                <li>What is the hidden directory?</li>
+                <ul><li><b>/p****/</b></li></ul>
             </ul>
-        </ul>
-    </div>
 
-    <div class="credits">
+            <p>In order to get the proper answer to these questions, we'll have to use <code>nmap</code> and <code>GoBuster</code></p>
+
+            <h4>Task 3: Getting a Shell</h4>
+
+            <p>Now we need to find a form to upload a exploit and get a reverse-shell running on the target system. Then we'll explore it and look for a flag on 
+                the system</p>
+            <ul>    
+                <li>The archive that we need to look for is <code>user.txt</code></li>
+                <ul><li><b>THM{y**_***_*_****l}</b></li></ul>
+            </ul>
+            <p>To find a way to hack the system, we need to analize all the resouces that we have, then start to test it and look for vulnerable places to attack.</p>
+
+            <h4>Task 4: Privilege Escalation</h4>
+            <p>Now that we got a shell, we need to find a way to become root. To do that, we are going to look for SUID files trying to find anything out of its 
+                place.</p>
+
+            <ul>
+                <li>Which file from the SUID list is weird?</li>
+                    <ul><li><b>/u**/***/******</b></li></ul>
+                <li>Find a form to escalate your privilege</li>
+                    <ul><li><b>No answer needed.</b></li></ul>
+                <li>What's the flag from the <code>root.txt</code> archive?</li>
+                    <ul><li><b>THM{p********_*********n}</b></li></ul>
+            </ul>
+        
+
+            <br>
+
+            <div class="steps" id="steps">
+                <h3>Steps</h3>
+                <ol>
+                    <!-- Using nmap -->
+                <li class="topics">Scan the machine using nmap:</li>
+                <p>Type: <code>nmap -sC -sV &lt;IP_Address></code></p>
+                <li style="list-style-type: circle;">Using <code>-sC</code> we are scanning with the nmap default scripts.</li><br>
+                <li style="list-style-type: circle;">Using <code>-sV</code> we are getting more information about the open ports in the target machine.</li>
+                
+                </ol>
+
+                <img src="images/nmap.png" alt="nmap's scan result">
+                <p>Now the first three questions can be answered properly:</p>
+
+                <ul>
+                    <li>How many ports are open?</li>
+                    <ul><li><b>2</b></li></ul>
+                    <li>What version of Apache is running?</li>
+                    <ul><li><b>2.4.29</b></li></ul>
+                    <li>What service is running on port 22?</li>
+                    <ul><li><b>SSH</b></li></ul>
+                </ul>
+
+                    <!-- Using GoBuster -->
+                <ol start="2">
+                    <li class="topics">Run GoBuster to look for files and directories on the web server.</li>
+                    <p>Type: <code>gobuster dir -u http://&lt;IP_Address> -w &lt;wordlist>.txt</code></p>
+                    <li style="list-style-type: circle;"><code>dir</code> is used in order for gobuster to look for directories and enter the brute-force mode.</li>
+                    <li style="list-style-type: circle;"><code>-u</code> can be used to pass a URL.</li>
+                    <li style="list-style-type: circle;"><code>-w</code> can be used to specify a wordlist.</li>
+                </ol>
+
+                <img src="images/gobuster.png" alt="GoBuster result">
+                <p>Based on the result above, one important question can be responded.</p>
+                <ul>
+                    <li>What is the hidden directory?</li>
+                    <ul><li><b>/panel/</b></li></ul>
+                </ul>
+                
+                    <!-- Accessing the hidden directory -->
+                <ol start="3">
+                    <li class="topics">Visit the hidden directory that we just found</li>
+                    <p><small>Always remember to use the web server IP address or URL.</small></p>
+                </ol>    
+
+                <img src="images/secretPage.png" alt="Secret page">
+                <p>Looks like in the hidden directory we can upload a file to the web server. Then, we can totally take this as an advantage and try to upload a malicius
+                    file to it.
+                </p>
+
+                    <!-- Starting the reverse-shell proccess -->
+                <ol start="4">
+                    <li class="topics">Now we need to upload a web shell in order to the a reverse-shell running on the target system.</li>
+                    <p>If you are using Kali Linux, it comes with all the tool we need to solve the CTF, including a php reverse-shell. To access it, navigate to 
+                        <code>/usr/share/webshells/php</code><br> and look for <code>php-reverse-shell.php</code>.
+                    </p>
+
+                    <p><small>Otherwise you can download it <a href="https://pentestmonkey.net/tools/web-shells/php-reverse-shell">here</a></small></p>
+
+                    <p>Now that we got everything we need, its time to change all the values on the php script in order to get our communication with the machine.
+                        To do that, just edit this values shown below. (You can use gedit or nano for it.)
+                    </p>
+                </ol>
+                <img src="images/php-reverse.png" alt="Editing the php script">
+                <figcaption>Edit the IP and PORT variables</figcaption>
+
+                    <!-- uploading the shell -->
+                <ol start="5">
+                    <li class="topics">Now, go back to the Website and upload the php script to the server.</li>
+                    <p>You should get an error! No worries, this is a file upload security solution that blocks archives that may break the server.
+                    To bypass this restriction, change the file extension to <code>php5</code><br><small>Note that there are other types of file upload restrictions
+                        and most of the time a simple extension change will not do it.
+                    </small></p>
+                </ol>
+                <img src="images/not-permitted.png" alt="Hidden page error">
+
+                <p>You can check the files on the server by accesing <code>&lt;IP_Address>/uploads/</code></p>
+                <img src="images/upload.png" alt="Uploads page">
+                
+                    <!-- netcat -->
+                <ol start="6">
+                    <li class="topics">Now that we got the reverse-shell on the target machine, we just need to start a <code>netcat</code> listener on the port that we configured 
+                        eirlier.</li>
+                    <p>Type: <code>sudo nc -lvpn 9999</code></p>
+                </ol>
+                <img src="images/listener.png" alt="NetCat Listener">
+
+                    <!-- curl -->
+                <p>With NetCat running, we just need to execute the php script on the target machine. To do that, we need to access its location.</p>
+                <p>One way of doing so is use the <code>curl</code> tool and make a http request on the webpage. Just type: 
+                    <code>curl http://&lt;IP_Address>/uploads/reverse-shell.php5</code></p>
+                <img src="images/curl.png" alt="Http request using curl">
+
+                <ol start="7">
+                    <li class="topics">Go back and check if we got a connection on the listener.</li>
+                </ol>
+                <img src="images/shell.png" alt="Getting a shell">
+                <figcaption>Yup! We got a shell!</figcaption>
+
+                <ol start="8">
+                    <li class="topics">In order to answer the next question, we need to explore the system looking for a file named <code>user.txt</code>. To do that, 
+                        we should use the Linux <code>Find</code> tool.</li>
+                    <p>Type: <code>find / -type f -name user.txt 2> /dev/null</code></p>
+                    
+                </ol>
+                <ul>
+                    <ul>
+                        <li><code>-type f</code> is used to look for files.</li>
+                        <li><code>-name</code> can be used to pass a filename.</li>
+                        <li><code>2> /dev/null</code> can be used to send the error messages.</li>
+                    </ul>    
+                </ul>
+                <img src="images/search-usertxt.png" alt="Using Find">
+
+                    <!-- user.txt flag -->
+                <ol start="9">
+                    <li class="topics">Retrieve the content of user.txt.</li>
+                    <p>Type: <code>cat /var/www/user.txt</code><br>Now we can answer one more question:</p>
+                </ol>
+                <ul>
+                    <li>What is <code>user.txt</code>?</li>
+                    <ul><li><strong>THM{y0u_g0t_a_sh3ll}</strong></li></ul>
+                </ul>
+
+                    <!-- SUID -->
+                <ol start="10">
+                    <li class="topics">To solve the next Task, we need to find strange files with SUID permissions and see if it can be explored and escalate our privilege.</li>
+                    <p>To do this, type: <code>find / type -f -user root -perm -u=s 2> /dev/null</code></p>
+                </ol>
+                <img src="images/suid.png" alt="SUID search">
+                <figcaption>The blurred path is the one out of place</figcaption>
+
+                <p>Now we can answer one more question:</p>
+                <ul>
+                    <li>Which file from the SUID list is weird?</li>
+                    <ul><li><strong>/usr/bin/python</strong></li></ul>
+                </ul>
+
+                    <!-- gtfobins -->
+                <ol start="11">
+                    <li class="topics">We just found a huge vulnerability on the target machine's OS. In order to exploit it, we can look up for specific 
+                        binaries onto <a href="http://https://gtfobins.github.io/">GTFOBins</a> website.</li>
+                </ol>
+                <img src="images/suid.png" alt="SUID Binary in GTFOBins' site">
+
+                <!-- Privilege Escalation -->
+                <ol start="12">
+                    <li class="topics">Now that we have everything we need to escalate our privilege, just execute the folowing command to get the root shell.</li>
+                    <p>Type: <code>python3 -c ‘import os; os.execl(“/bin/sh”, “sh”, “-p”)’</code></p>
+                </ol>
+                <img src="images/root.png" alt="Getting super user privileges">
+                <figcaption>Now we're root!</figcaption>
+
+                <!-- Root flag location  -->
+                <ol start="13">
+                    <li class="topics">To find the root's flag, we need to use the <code>find</code> command again.</li>
+                    <p>Type: <code>find / -type f -name root.txt</code></p>
+                </ol>
+                <img src="images/rootflag-location.png" alt="Super user flag location">
+                <figcaption>root flag location</figcaption>
+
+                <!-- Root flag-->
+                <ol start="14">
+                    <li class="topics">Retrieve content of <code>root.txt</code> using the <code>cat</code> command.</li>
+                    <p>Type: <code>cat /root/root.txt</code></p>
+                </ol>
+                <img src="images/root-flag.png" alt="Super user flag">
+                <figcaption>root flag!</figcaption>
+
+                <p>And now, finally, we can answer the final question:</p>
+                <ul>
+                    <li>What's the flag from the root.txt archive?</li>
+                    <ul>
+                        <li><b>THM{pri1v1l3g3_3sc4l4t10n}</b></li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="credits" id="credits">
         <a href="https://tryhackme.com/room/rrootme">Room</a><br>
         <a href="https://beginninghacking.net/2020/09/09/try-hack-me-rootme/">Images</a><br>
         <a href="https://github.com/sdbius" target="_self" rel="next">@sdbius</a>
