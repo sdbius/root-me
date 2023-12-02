@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,38 +8,45 @@
     <title>RootMe Writeup</title>
     <link rel="icon" href="images/hacker.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
 </head>
+
 <body>
-    <header>
-    <!-- navBar -->
-    <div class="navbar" id="navbar">
+
+<header>
+
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
         <a href="#home">Top</a>
         <a href="#tasks">Tasks</a>
         <a href="#steps">Walk-through</a>
         <a href="#credits">Credits</a>
-    </div>
-    </header>
+    </nav>
+</header>
 
-    <main>
-        <div class="content">
+<main>
+    <div class="content">
 
-            <h2 style="padding-top: 60px; margin-bottom: 10px;" id="home">RootMe Capture the Flag walk through</h2>
+        <h1 id="home">RootMe Capture the Flag walk through</h1>
 
-            <p>RootMe is a vulnerable machine created by reddyyZ on TryHackMe practice room and is meant to test skills like: nmap, GoBuster, privilege escalation,
-                SUID, find webshell and GTFOBins.
-            </p>
-            <p>You can access it by clicking in the link below:</p>
-            <a href="https://tryhackme.com/room/rrootme">RootMe on TryHackMe Official Website</a>
-        
-            <p>In order to solve this easy room, there are some requirements and tasks to complete, let's have a look on them!</p>
-            <br>
-            <h3 id="tasks">Tasks</h3>
-            <h4>Task 1: Deploy the Machine</h4>
-            <p>A very simple task. In this first one we just need to run the machine in order to be able to access it through its IP (Internet Protocol).</p>
-            
+        <button id="toggleModeButton">Night Mode</button>
+
+        <p>RootMe is a vulnerable machine created by reddyyZ on TryHackMe practice room and is meant to test skills like:
+            nmap, GoBuster, privilege escalation, SUID, find webshell and GTFOBins.
+        </p>
+        <p>You can access it by clicking in the link below:</p>
+        <a href="https://tryhackme.com/room/rrootme" target="_blank" rel="noopener noreferrer">RootMe on TryHackMe Official Website</a>
+
+        <p>In order to solve this easy room, there are some requirements and tasks to complete, let's have a look on
+            them!</p>
+        <br>
+        <h2 id="tasks">Tasks</h2>
+        <h3>Task 1: Deploy the Machine</h3>
+        <p>A very simple task. In this first one we just need to run the machine in order to be able to access it
+            through its IP (Internet Protocol).</p>
+
             <h4>Task 2: Reconnaissance</h4>
-            <p>Here its where the hacking really begins! Now we got a some more questions to solve to get to the next task.</p>
+            <p>Here it's where the hacking really begins! Now we got a some more questions to solve to get to the next task.</p>
 
             <ul>
                 <li>How many ports are open?</li>
@@ -50,23 +58,23 @@
                 <li>Find directories on the web server using the enumaration tool.</li>
                 <ul><li><b>No answer needed.</b></li></ul>
                 <li>What is the hidden directory?</li>
-                <ul><li><b>/p****/</b></li></ul>
+                    <ul><li><b>/p****/</b></li></ul>
             </ul>
 
             <p>In order to get the proper answer to these questions, we'll have to use <code>nmap</code> and <code>GoBuster</code></p>
 
             <h4>Task 3: Getting a Shell</h4>
 
-            <p>Now we need to find a form to upload a exploit and get a reverse-shell running on the target system. Then we'll explore it and look for a flag on 
+            <p>Now we need to find a form to upload an exploit and get a reverse-shell running on the target system. Then we'll explore it and look for a flag on
                 the system</p>
-            <ul>    
+            <ul>
                 <li>The archive that we need to look for is <code>user.txt</code></li>
                 <ul><li><b>THM{y**_***_*_****l}</b></li></ul>
             </ul>
             <p>To find a way to hack the system, we need to analize all the resouces that we have, then start to test it and look for vulnerable places to attack.</p>
 
             <h4>Task 4: Privilege Escalation</h4>
-            <p>Now that we got a shell, we need to find a way to become root. To do that, we are going to look for SUID files trying to find anything out of its 
+            <p>Now that we got a shell, we need to find a way to become root. To do that, we are going to look for SUID files trying to find anything out of its
                 place.</p>
 
             <ul>
@@ -77,7 +85,7 @@
                 <li>What's the flag from the <code>root.txt</code> archive?</li>
                     <ul><li><b>THM{p********_*********n}</b></li></ul>
             </ul>
-        
+
 
             <br>
 
@@ -89,7 +97,7 @@
                 <p>Type: <code>nmap -sC -sV &lt;IP_Address></code></p>
                 <li style="list-style-type: circle;">Using <code>-sC</code> we are scanning with the nmap default scripts.</li><br>
                 <li style="list-style-type: circle;">Using <code>-sV</code> we are getting more information about the open ports in the target machine.</li>
-                
+
                 </ol>
 
                 <img src="images/nmap.png" alt="nmap's scan result">
@@ -119,12 +127,12 @@
                     <li>What is the hidden directory?</li>
                     <ul><li><b>/panel/</b></li></ul>
                 </ul>
-                
+
                     <!-- Accessing the hidden directory -->
                 <ol start="3">
                     <li class="topics">Visit the hidden directory that we just found</li>
                     <p><small>Always remember to use the web server IP address or URL.</small></p>
-                </ol>    
+                </ol>
 
                 <img src="images/secretPage.png" alt="Secret page">
                 <p>Looks like in the hidden directory we can upload a file to the web server. Then, we can totally take this as an advantage and try to upload a malicius
@@ -133,14 +141,14 @@
 
                     <!-- Starting the reverse-shell proccess -->
                 <ol start="4">
-                    <li class="topics">Now we need to upload a web shell in order to the a reverse-shell running on the target system.</li>
-                    <p>If you are using Kali Linux, it comes with all the tool we need to solve the CTF, including a php reverse-shell. To access it, navigate to 
+                    <li class="topics">Now we need to upload a web shell in order to the get a reverse-shell running on the target system.</li>
+                    <p>If you are using Kali Linux, it comes with all the tool we need to solve the CTF, including a php reverse-shell. To access it, navigate to
                         <code>/usr/share/webshells/php</code><br> and look for <code>php-reverse-shell.php</code>.
                     </p>
 
-                    <p><small>Otherwise you can download it <a href="https://pentestmonkey.net/tools/web-shells/php-reverse-shell">here</a></small></p>
+                    <p><small>Otherwise, you can download it <a href="https://pentestmonkey.net/tools/web-shells/php-reverse-shell">here</a></small></p>
 
-                    <p>Now that we got everything we need, its time to change all the values on the php script in order to get our communication with the machine.
+                    <p>Now that we got everything we need, it's time to change all the values on the php script in order to get our communication with the machine.
                         To do that, just edit this values shown below. (You can use gedit or nano for it.)
                     </p>
                 </ol>
@@ -159,10 +167,10 @@
 
                 <p>You can check the files on the server by accesing <code>&lt;IP_Address>/uploads/</code></p>
                 <img src="images/upload.png" alt="Uploads page">
-                
+
                     <!-- netcat -->
                 <ol start="6">
-                    <li class="topics">Now that we got the reverse-shell on the target machine, we just need to start a <code>netcat</code> listener on the port that we configured 
+                    <li class="topics">Now that we got the reverse-shell on the target machine, we just need to start a <code>netcat</code> listener on the port that we configured
                         eirlier.</li>
                     <p>Type: <code>sudo nc -lvpn 9999</code></p>
                 </ol>
@@ -170,7 +178,7 @@
 
                     <!-- curl -->
                 <p>With NetCat running, we just need to execute the php script on the target machine. To do that, we need to access its location.</p>
-                <p>One way of doing so is use the <code>curl</code> tool and make a http request on the webpage. Just type: 
+                <p>One way of doing so is use the <code>curl</code> tool and make a http request on the webpage. Just type:
                     <code>curl http://&lt;IP_Address>/uploads/reverse-shell.php5</code></p>
                 <img src="images/curl.png" alt="Http request using curl">
 
@@ -181,17 +189,17 @@
                 <figcaption>Yup! We got a shell!</figcaption>
 
                 <ol start="8">
-                    <li class="topics">In order to answer the next question, we need to explore the system looking for a file named <code>user.txt</code>. To do that, 
+                    <li class="topics">In order to answer the next question, we need to explore the system looking for a file named <code>user.txt</code>. To do that,
                         we should use the Linux <code>Find</code> tool.</li>
                     <p>Type: <code>find / -type f -name user.txt 2> /dev/null</code></p>
-                    
+
                 </ol>
                 <ul>
                     <ul>
                         <li><code>-type f</code> is used to look for files.</li>
                         <li><code>-name</code> can be used to pass a filename.</li>
                         <li><code>2> /dev/null</code> can be used to send the error messages.</li>
-                    </ul>    
+                    </ul>
                 </ul>
                 <img src="images/search-usertxt.png" alt="Using Find">
 
@@ -221,7 +229,7 @@
 
                     <!-- gtfobins -->
                 <ol start="11">
-                    <li class="topics">We just found a huge vulnerability on the target machine's OS. In order to exploit it, we can look up for specific 
+                    <li class="topics">We just found a huge vulnerability on the target machine's OS. In order to exploit it, we can look up for specific
                         binaries onto <a href="http://https://gtfobins.github.io/">GTFOBins</a> website.</li>
                 </ol>
                 <img src="images/suid.png" alt="SUID Binary in GTFOBins' site">
@@ -263,9 +271,11 @@
     </main>
 
     <div class="credits" id="credits">
-        <a href="https://tryhackme.com/room/rrootme">Room</a><br>
-        <a href="https://beginninghacking.net/2020/09/09/try-hack-me-rootme/">Images</a><br>
+        <a href="https://tryhackme.com/room/rrootme" target="_blank" rel="noopener noreferrer">Room</a><br>
+        <a href="https://beginninghacking.net/2020/09/09/try-hack-me-rootme/" target="_blank" rel="noopener noreferrer">Images</a><br>
         <a href="https://github.com/tiagovst" target="_self" rel="next">@tiagovst</a>
     </div>
+
+    <script type="text/javascript" src="script.js"></script>
 </body>
 </html>
